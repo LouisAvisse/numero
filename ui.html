@@ -3,14 +3,15 @@
 <head>
   <style>
     :root {
-      --bg: #1a1a1a;
-      --surface: #242424;
-      --surface-hover: #2e2e2e;
-      --border: #333;
-      --text: #fff;
-      --text-muted: #888;
+      --bg: #161616;
+      --surface: #1e1e1e;
+      --surface-hover: #272727;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --text-muted: #6b6b6b;
       --accent: #ff6b35;
       --accent-hover: #ff8555;
+      --accent-subtle: rgba(255, 107, 53, 0.08);
       --success: #4ade80;
       --error: #f87171;
     }
@@ -23,11 +24,15 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-size: 12px;
+      font-size: 11px;
       background: var(--bg);
       color: var(--text);
-      padding: 16px;
-      line-height: 1.4;
+      padding: 12px 14px;
+      line-height: 1.3;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Header */
@@ -35,138 +40,157 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
     }
 
     .title {
       font-size: 13px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
     }
 
     .selection-badge {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--text-muted);
-      background: var(--surface);
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 3px 7px;
+      border-radius: 10px;
       font-variant-numeric: tabular-nums;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: all 0.15s ease;
     }
 
     .selection-badge.active {
       color: var(--accent);
-      background: rgba(255, 107, 53, 0.15);
+      background: var(--accent-subtle);
+      border-color: rgba(255, 107, 53, 0.2);
     }
 
-    /* Direction Grid */
+    /* Section */
+    .section {
+      margin-bottom: 14px;
+    }
+
     .section-label {
       font-size: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       color: var(--text-muted);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+      font-weight: 500;
     }
 
+    /* Direction Grid — 4 in a row */
     .direction-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid var(--border);
     }
 
     .direction-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      padding: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px 4px;
+      background: transparent;
+      border: 1px solid transparent;
       border-radius: 6px;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.15s ease;
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 500;
+      letter-spacing: 0.02em;
     }
 
     .direction-btn:hover {
       background: var(--surface-hover);
-      border-color: #444;
       color: var(--text);
     }
 
     .direction-btn.selected {
-      background: rgba(255, 107, 53, 0.1);
-      border-color: var(--accent);
+      background: var(--accent-subtle);
+      border-color: rgba(255, 107, 53, 0.25);
       color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(255, 107, 53, 0.1);
     }
 
     .direction-btn svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       flex-shrink: 0;
+      opacity: 0.7;
     }
 
-    /* Options */
+    .direction-btn.selected svg,
+    .direction-btn:hover svg {
+      opacity: 1;
+    }
+
+    /* Options — compact 2x2 */
     .options {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 6px;
     }
 
     .option {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-    }
-
-    .option.full {
-      grid-column: span 2;
+      gap: 3px;
     }
 
     .option label {
       font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.03em;
       color: var(--text-muted);
+      font-weight: 500;
     }
 
     .option input {
-      padding: 8px 10px;
+      padding: 6px 8px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 4px;
+      border-radius: 6px;
       color: var(--text);
-      font-size: 12px;
+      font-size: 11px;
       font-family: inherit;
       outline: none;
-      transition: border-color 0.15s ease;
+      transition: all 0.15s ease;
+      width: 100%;
     }
 
     .option input:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-subtle);
     }
 
     .option input::placeholder {
-      color: #555;
+      color: #444;
     }
+
+    /* Spacer pushes actions to bottom */
+    .spacer { flex: 1; min-height: 10px; }
 
     /* Actions */
     .actions {
       display: flex;
-      gap: 8px;
+      gap: 6px;
     }
 
     .btn {
       flex: 1;
-      padding: 10px 16px;
+      padding: 8px 12px;
       border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
+      font-size: 11px;
+      font-weight: 600;
       cursor: pointer;
       transition: all 0.15s ease;
       border: none;
@@ -180,11 +204,13 @@
 
     .btn-primary:hover {
       background: var(--accent-hover);
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25);
     }
 
     .btn-primary:disabled {
-      opacity: 0.4;
+      opacity: 0.35;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
     .btn-secondary {
@@ -201,17 +227,18 @@
     /* Toast */
     .toast {
       position: fixed;
-      bottom: 16px;
-      left: 16px;
-      right: 16px;
-      padding: 10px 12px;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
+      padding: 8px 10px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       text-align: center;
-      transform: translateY(100px);
+      transform: translateY(60px);
       opacity: 0;
       transition: all 0.2s ease;
+      z-index: 10;
     }
 
     .toast.show {
@@ -220,15 +247,15 @@
     }
 
     .toast.success {
-      background: rgba(74, 222, 128, 0.15);
+      background: rgba(74, 222, 128, 0.12);
       color: var(--success);
-      border: 1px solid rgba(74, 222, 128, 0.3);
+      border: 1px solid rgba(74, 222, 128, 0.2);
     }
 
     .toast.error {
-      background: rgba(248, 113, 113, 0.15);
+      background: rgba(248, 113, 113, 0.12);
       color: var(--error);
-      border: 1px solid rgba(248, 113, 113, 0.3);
+      border: 1px solid rgba(248, 113, 113, 0.2);
     }
   </style>
 </head>
@@ -238,52 +265,59 @@
     <span class="selection-badge" id="selectionBadge">0 selected</span>
   </div>
 
-  <div class="section-label">Direction</div>
-  <div class="direction-grid">
-    <button class="direction-btn selected" data-direction="left-right">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M5 12h14M12 5l7 7-7 7"/>
-      </svg>
-      L → R
-    </button>
-    <button class="direction-btn" data-direction="right-left">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-      R → L
-    </button>
-    <button class="direction-btn" data-direction="top-bottom">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 5v14M5 12l7 7 7-7"/>
-      </svg>
-      T → B
-    </button>
-    <button class="direction-btn" data-direction="bottom-top">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 19V5M19 12l-7-7-7 7"/>
-      </svg>
-      B → T
-    </button>
+  <div class="section">
+    <div class="section-label">Direction</div>
+    <div class="direction-grid">
+      <button class="direction-btn selected" data-direction="left-right">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+        L → R
+      </button>
+      <button class="direction-btn" data-direction="right-left">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        R → L
+      </button>
+      <button class="direction-btn" data-direction="top-bottom">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        T → B
+      </button>
+      <button class="direction-btn" data-direction="bottom-top">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 19V5M19 12l-7-7-7 7"/>
+        </svg>
+        B → T
+      </button>
+    </div>
   </div>
 
-  <div class="options">
-    <div class="option">
-      <label>Start at</label>
-      <input type="number" id="startAt" value="1" min="0">
-    </div>
-    <div class="option">
-      <label>Padding</label>
-      <input type="number" id="padding" value="1" min="1" max="5">
-    </div>
-    <div class="option">
-      <label>Prefix</label>
-      <input type="text" id="prefix" placeholder="e.g. step-">
-    </div>
-    <div class="option">
-      <label>Suffix</label>
-      <input type="text" id="suffix" placeholder="e.g. _final">
+  <div class="section">
+    <div class="section-label">Options</div>
+    <div class="options">
+      <div class="option">
+        <label>Start at</label>
+        <input type="number" id="startAt" value="1" min="0">
+      </div>
+      <div class="option">
+        <label>Padding</label>
+        <input type="number" id="padding" value="1" min="1" max="5">
+      </div>
+      <div class="option">
+        <label>Prefix</label>
+        <input type="text" id="prefix" placeholder="step-">
+      </div>
+      <div class="option">
+        <label>Suffix</label>
+        <input type="text" id="suffix" placeholder="_final">
+      </div>
     </div>
   </div>
+
+  <div class="spacer"></div>
 
   <div class="actions">
     <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
