@@ -1,6 +1,6 @@
 // Layer Numbering Plugin - Main Logic
 
-figma.showUI(__html__, { width: 260, height: 300 });
+figma.showUI(__html__, { width: 300, height: 420 });
 
 figma.ui.onmessage = (msg) => {
   if (msg.type === 'number-layers') {
