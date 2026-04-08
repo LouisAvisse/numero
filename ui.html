@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --surface: #242424;
+      --surface-hover: #2e2e2e;
+      --border: #333;
+      --text: #fff;
+      --text-muted: #888;
+      --accent: #ff6b35;
+      --accent-hover: #ff8555;
+      --success: #4ade80;
+      --error: #f87171;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      line-height: 1.4;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .selection-badge {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--surface);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .selection-badge.active {
+      color: var(--accent);
+      background: rgba(255, 107, 53, 0.15);
+    }
+
+    /* Direction Grid */
+    .section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .direction-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .direction-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .direction-btn:hover {
+      background: var(--surface-hover);
+      border-color: #444;
+      color: var(--text);
+    }
+
+    .direction-btn.selected {
+      background: rgba(255, 107, 53, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .direction-btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Options */
+    .options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .option.full {
+      grid-column: span 2;
+    }
+
+    .option label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+
+    .option input {
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .option input:focus {
+      border-color: var(--accent);
+    }
+
+    .option input::placeholder {
+      color: #555;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: center;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--success);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+    }
+
+    .toast.error {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--error);
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="title">Numero</span>
+    <span class="selection-badge" id="selectionBadge">0 selected</span>
+  </div>
+
+  <div class="section-label">Direction</div>
+  <div class="direction-grid">
+    <button class="direction-btn selected" data-direction="left-right">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+      L → R
+    </button>
+    <button class="direction-btn" data-direction="right-left">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      R → L
+    </button>
+    <button class="direction-btn" data-direction="top-bottom">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+      T → B
+    </button>
+    <button class="direction-btn" data-direction="bottom-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19V5M19 12l-7-7-7 7"/>
+      </svg>
+      B → T
+    </button>
+  </div>
+
+  <div class="options">
+    <div class="option">
+      <label>Start at</label>
+      <input type="number" id="startAt" value="1" min="0">
+    </div>
+    <div class="option">
+      <label>Padding</label>
+      <input type="number" id="padding" value="1" min="1" max="5">
+    </div>
+    <div class="option">
+      <label>Prefix</label>
+      <input type="text" id="prefix" placeholder="e.g. step-">
+    </div>
+    <div class="option">
+      <label>Suffix</label>
+      <input type="text" id="suffix" placeholder="e.g. _final">
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+    <button class="btn btn-primary" id="applyBtn">Apply</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let selectedDirection = 'left-right';
+    let selectionCount = 0;
+
+    // Direction buttons
+    document.querySelectorAll('.direction-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.direction-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedDirection = btn.dataset.direction;
+      });
+    });
+
+    // Apply
+    document.getElementById('applyBtn').addEventListener('click', () => {
+      parent.postMessage({
+        pluginMessage: {
+          type: 'number-layers',
+          direction: selectedDirection,
+          startAt: parseInt(document.getElementById('startAt').value) || 1,
+          padding: parseInt(document.getElementById('padding').value) || 1,
+          prefix: document.getElementById('prefix').value,
+          suffix: document.getElementById('suffix').value
+        }
+      }, '*');
+    });
+
+    // Cancel
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    });
+
+    // Messages from plugin
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      if (!msg) return;
+
+      if (msg.type === 'selection') {
+        selectionCount = msg.count;
+        const badge = document.getElementById('selectionBadge');
+        badge.textContent = `${msg.count} selected`;
+        badge.classList.toggle('active', msg.count > 0);
+        document.getElementById('applyBtn').disabled = msg.count === 0;
+      }
+
+      if (msg.type === 'success' || msg.type === 'error') {
+        showToast(msg.message, msg.type);
+      }
+    };
+
+    function showToast(message, type) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type} show`;
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+  </script>
+</body>
+</html>
