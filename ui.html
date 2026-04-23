@@ -12,24 +12,20 @@
       --text-muted: #a1a1aa;
       --accent: #ff6b35;
       --accent-hover: #ff8555;
-      --accent-foreground: #ffffff;
+      --accent-fg: #ffffff;
       --accent-subtle: rgba(255, 107, 53, 0.1);
       --success: #10b981;
       --error: #ef4444;
       --radius: 8px;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
       font-size: 12px;
       line-height: 1.5;
-      background-color: var(--bg);
+      background: var(--bg);
       color: var(--text);
       height: 100vh;
       display: flex;
@@ -38,33 +34,20 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Scrollable content area ────────────────────── */
+    /* ── Scrollable content ─────────────────────────── */
 
     .content {
       flex: 1;
       min-height: 0;
       overflow-y: auto;
-      padding: 16px 16px 0;
+      padding: 16px 16px 8px;
     }
 
-    .content::-webkit-scrollbar {
-      width: 4px;
-    }
+    .content::-webkit-scrollbar { width: 4px; }
+    .content::-webkit-scrollbar-track { background: transparent; }
+    .content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-    .content::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .content::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 2px;
-    }
-
-    .content::-webkit-scrollbar-thumb:hover {
-      background: var(--text-muted);
-    }
-
-    /* ── Header & Badge ─────────────────────────────── */
+    /* ── Header ─────────────────────────────────────── */
 
     .header {
       display: flex;
@@ -73,13 +56,9 @@
       margin-bottom: 20px;
     }
 
-    .title {
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-    }
+    .title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
 
-    .selection-badge {
+    .badge {
       display: flex;
       align-items: center;
       gap: 5px;
@@ -90,16 +69,16 @@
       border-radius: 9999px;
       background: var(--surface);
       border: 1px solid var(--border);
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.2s;
     }
 
-    .selection-badge.active {
+    .badge.active {
       color: var(--accent);
       background: var(--accent-subtle);
       border-color: rgba(255, 107, 53, 0.2);
     }
 
-    .status-dot {
+    .badge-dot {
       width: 5px;
       height: 5px;
       border-radius: 50%;
@@ -108,9 +87,7 @@
 
     /* ── Sections ───────────────────────────────────── */
 
-    .section {
-      margin-bottom: 16px;
-    }
+    .section { margin-bottom: 16px; }
 
     .section-label {
       font-size: 11px;
@@ -121,25 +98,20 @@
       letter-spacing: 0.05em;
     }
 
-    /* ── Direction Grid ─────────────────────────────── */
+    /* ── Order pills ────────────────────────────────── */
 
-    .direction-grid {
+    .order-pills {
       display: flex;
       gap: 2px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 4px;
+      padding: 3px;
     }
 
-    .direction-btn {
+    .order-pill {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 8px 0;
+      padding: 7px 0;
       background: transparent;
       border: 1px solid transparent;
       border-radius: calc(var(--radius) - 2px);
@@ -147,38 +119,26 @@
       cursor: pointer;
       transition: all 0.2s;
       font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      text-align: center;
     }
 
-    .direction-btn:hover {
-      background: var(--surface-hover);
-      color: var(--text);
-    }
+    .order-pill:hover { background: var(--surface-hover); color: var(--text); }
 
-    .direction-btn.selected {
+    .order-pill.selected {
       background: var(--bg);
       border-color: var(--border);
       color: var(--accent);
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-    .direction-btn svg {
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.2px;
-    }
+    /* ── Form ───────────────────────────────────────── */
 
-    .direction-btn span {
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    /* ── Options Form ───────────────────────────────── */
-
-    .options {
+    .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .form-group {
@@ -187,7 +147,7 @@
       gap: 5px;
     }
 
-    .form-group label {
+    .form-group > label {
       font-size: 11px;
       font-weight: 500;
       color: var(--text-muted);
@@ -214,9 +174,7 @@
       box-shadow: 0 0 0 2px var(--accent-subtle);
     }
 
-    input::placeholder {
-      color: #3f3f46;
-    }
+    input::placeholder { color: #3f3f46; }
 
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
@@ -225,18 +183,13 @@
       cursor: pointer;
     }
 
-    /* ── Input with suffix (px, %) ──────────────────── */
-
-    .input-suffix-wrap {
+    .input-suffix {
       position: relative;
-      width: 100%;
     }
 
-    .input-suffix-wrap input {
-      padding-right: 28px;
-    }
+    .input-suffix input { padding-right: 28px; }
 
-    .suffix {
+    .input-suffix span {
       position: absolute;
       right: 8px;
       top: 50%;
@@ -247,155 +200,120 @@
       opacity: 0.5;
     }
 
-    /* ── Page Numbers Section ───────────────────────── */
+    /* ── Section header with checkbox ───────────────── */
 
     .section-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 10px;
     }
 
-    .section-header .section-label {
-      margin-bottom: 0;
-    }
-
-    .section-actions {
+    .section-check {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
-    .btn-clear {
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-family: inherit;
-      cursor: pointer;
-      padding: 2px 6px;
-      border-radius: 4px;
-      opacity: 0.6;
+    .section-check input { display: none; }
+
+    .check-box {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
       transition: all 0.15s;
     }
 
-    .btn-clear:hover {
+    .section-check input:checked + .check-box {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .check-box svg {
+      width: 8px;
+      height: 8px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    .section-check input:checked + .check-box svg { opacity: 1; }
+
+    .section-check .section-label { margin-bottom: 0; }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      opacity: 0.5;
+      transition: all 0.15s;
+      display: grid;
+      place-items: center;
+    }
+
+    .btn-icon:hover {
       color: var(--error);
       opacity: 1;
       background: rgba(239, 68, 68, 0.08);
     }
 
-    /* Toggle Switch */
-    .toggle-switch {
-      position: relative;
-      display: inline-block;
-      cursor: pointer;
+    /* ── Page number options ─────────────────────────── */
+
+    .page-opts { transition: opacity 0.2s; }
+
+    .page-opts.disabled {
+      opacity: 0.3;
+      pointer-events: none;
     }
 
-    .toggle-switch input {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    /* ── Position map ───────────────────────────────── */
 
-    .toggle-track {
-      width: 32px;
-      height: 18px;
-      background: var(--border);
-      border-radius: 9px;
-      position: relative;
-      transition: background 0.2s;
-    }
-
-    .toggle-track::after {
-      content: '';
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: var(--text-muted);
-      border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .toggle-switch input:checked + .toggle-track {
-      background: var(--accent);
-    }
-
-    .toggle-switch input:checked + .toggle-track::after {
-      transform: translateX(14px);
-      background: white;
-    }
-
-    /* Expandable content */
-    .page-num-content {
-      max-height: 0;
-      overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.3s ease, opacity 0.2s ease;
-    }
-
-    .page-num-content.expanded {
-      max-height: 400px;
-      opacity: 1;
-    }
-
-    .page-num-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      padding-top: 12px;
-    }
-
-    /* Position toggle */
-    .position-grid {
-      display: flex;
-      gap: 2px;
+    .position-map {
+      height: 64px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 3px;
+      position: relative;
     }
 
-    .position-btn {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 4px;
-      padding: 6px 0;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: calc(var(--radius) - 2px);
-      color: var(--text-muted);
+    .pos-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
       cursor: pointer;
-      transition: all 0.2s;
-      font-family: inherit;
-      font-size: 10px;
-      font-weight: 500;
+      transition: all 0.15s;
     }
 
-    .position-btn:hover {
-      background: var(--surface-hover);
-      color: var(--text);
+    .pos-dot:hover {
+      background: var(--text-muted);
+      transform: scale(1.3);
     }
 
-    .position-btn.selected {
-      background: var(--bg);
-      border-color: var(--border);
-      color: var(--accent);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    .pos-dot.selected {
+      background: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-subtle);
     }
 
-    .position-btn svg {
-      width: 14px;
-      height: 14px;
-    }
+    .pos-dot.tl { top: 10px; left: 10px; }
+    .pos-dot.tr { top: 10px; right: 10px; }
+    .pos-dot.bl { bottom: 10px; left: 10px; }
+    .pos-dot.br { bottom: 10px; right: 10px; }
 
-    /* ── Color picker ──────────────────────────────── */
+    /* ── Color input ────────────────────────────────── */
 
-    .color-input-row {
+    .color-row {
       display: flex;
       gap: 6px;
       align-items: center;
@@ -413,9 +331,7 @@
       transition: border-color 0.2s;
     }
 
-    .color-swatch:hover {
-      border-color: var(--text-muted);
-    }
+    .color-swatch:hover { border-color: var(--text-muted); }
 
     .color-swatch input[type="color"] {
       position: absolute;
@@ -428,39 +344,9 @@
       opacity: 0;
     }
 
-    .color-input-row input[type="text"] {
-      flex: 1;
-      min-width: 0;
-    }
+    .color-row input[type="text"] { flex: 1; min-width: 0; }
 
-    /* Color presets */
-    .color-presets {
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    .color-preset {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 1.5px solid rgba(255, 255, 255, 0.12);
-      transition: all 0.15s;
-      flex-shrink: 0;
-    }
-
-    .color-preset:hover {
-      transform: scale(1.15);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .color-preset.selected {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent);
-    }
-
-    /* ── Footer Actions ─────────────────────────────── */
+    /* ── Actions ────────────────────────────────────── */
 
     .actions {
       flex-shrink: 0;
@@ -487,7 +373,7 @@
 
     .btn-primary {
       background: var(--accent);
-      color: var(--accent-foreground);
+      color: var(--accent-fg);
       border: none;
     }
 
@@ -496,9 +382,7 @@
       box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
     }
 
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
+    .btn-primary:active { transform: scale(0.98); }
 
     .btn-primary:disabled {
       opacity: 0.5;
@@ -518,7 +402,7 @@
       border-color: var(--text-muted);
     }
 
-    /* ── Toast Notification ─────────────────────────── */
+    /* ── Toast ──────────────────────────────────────── */
 
     .toast {
       position: fixed;
@@ -540,14 +424,11 @@
       gap: 8px;
     }
 
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-    }
-
+    .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { color: var(--success); }
     .toast.error { color: var(--error); }
 
-    .toast-icon {
+    .toast-dot {
       width: 4px;
       height: 4px;
       background: currentColor;
@@ -557,55 +438,33 @@
 </head>
 <body>
   <div class="toast" id="toast">
-    <div class="toast-icon"></div>
-    <span id="toastMessage"></span>
+    <div class="toast-dot"></div>
+    <span id="toastMsg"></span>
   </div>
 
   <div class="content">
-    <!-- Header -->
     <div class="header">
       <span class="title">Numero</span>
-      <div class="selection-badge" id="selectionBadge">
-        <div class="status-dot"></div>
-        <span id="selectionText">0 selected</span>
+      <div class="badge" id="badge">
+        <div class="badge-dot"></div>
+        <span id="badgeText">0 selected</span>
       </div>
     </div>
 
-    <!-- Direction -->
+    <!-- Order -->
     <div class="section">
-      <div class="section-label">Direction</div>
-      <div class="direction-grid">
-        <button class="direction-btn selected" data-direction="left-right" title="Left to Right">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M5 12h14M13 5l7 7-7 7"/>
-          </svg>
-          <span>L &rarr; R</span>
-        </button>
-        <button class="direction-btn" data-direction="right-left" title="Right to Left">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M19 12H5M11 19l-7-7 7-7"/>
-          </svg>
-          <span>R &rarr; L</span>
-        </button>
-        <button class="direction-btn" data-direction="top-bottom" title="Top to Bottom">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 5v14M19 13l-7 7-7-7"/>
-          </svg>
-          <span>T &rarr; B</span>
-        </button>
-        <button class="direction-btn" data-direction="bottom-top" title="Bottom to Top">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M12 19V5M5 11l7-7 7 7"/>
-          </svg>
-          <span>B &rarr; T</span>
-        </button>
+      <div class="section-label">Order</div>
+      <div class="order-pills">
+        <button class="order-pill selected" data-order="lines">Lines</button>
+        <button class="order-pill" data-order="columns">Columns</button>
+        <button class="order-pill" data-order="auto">Auto</button>
       </div>
     </div>
 
-    <!-- Naming Options -->
+    <!-- Naming -->
     <div class="section">
-      <div class="section-label">Options</div>
-      <div class="options">
+      <div class="section-label">Naming</div>
+      <div class="grid-2">
         <div class="form-group">
           <label for="startAt">Start at</label>
           <input type="number" id="startAt" value="1" min="0">
@@ -616,99 +475,76 @@
         </div>
         <div class="form-group">
           <label for="prefix">Prefix</label>
-          <input type="text" id="prefix" placeholder="Item-">
+          <input type="text" id="prefix" placeholder="e.g. Slide-">
         </div>
         <div class="form-group">
           <label for="suffix">Suffix</label>
-          <input type="text" id="suffix" placeholder="-final">
+          <input type="text" id="suffix" placeholder="e.g. _final">
         </div>
       </div>
     </div>
 
     <!-- Page Numbers -->
-    <div class="section" id="pageNumSection">
+    <div class="section">
       <div class="section-header">
-        <span class="section-label">Page Numbers</span>
-        <div class="section-actions">
-          <button class="btn-clear" id="clearPageNums" title="Remove existing page labels from selection">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+        <label class="section-check">
+          <input type="checkbox" id="pageNumEnabled">
+          <div class="check-box">
+            <svg viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6l3 3 5-5.5"/>
             </svg>
-          </button>
-          <label class="toggle-switch">
-            <input type="checkbox" id="pageNumEnabled">
-            <div class="toggle-track"></div>
-          </label>
-        </div>
+          </div>
+          <span class="section-label">Page Numbers</span>
+        </label>
+        <button class="btn-icon" id="clearBtn" title="Remove page labels">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+          </svg>
+        </button>
       </div>
-      <div class="page-num-content" id="pageNumContent">
-        <div class="page-num-options">
-          <!-- Position -->
+      <div class="page-opts disabled" id="pageOpts">
+        <div class="grid-2">
           <div class="form-group">
             <label>Position</label>
-            <div class="position-grid">
-              <button class="position-btn" data-pos="bottom-left" title="Bottom Left">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-                  <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
-                  <circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-                </svg>
-                <span>Left</span>
-              </button>
-              <button class="position-btn selected" data-pos="bottom-right" title="Bottom Right">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-                  <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
-                  <circle cx="11" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-                </svg>
-                <span>Right</span>
-              </button>
+            <div class="position-map">
+              <div class="pos-dot tl" data-pos="top-left"></div>
+              <div class="pos-dot tr" data-pos="top-right"></div>
+              <div class="pos-dot bl" data-pos="bottom-left"></div>
+              <div class="pos-dot br selected" data-pos="bottom-right"></div>
             </div>
           </div>
-          <!-- Font Size -->
           <div class="form-group">
-            <label for="pageSize">Font size</label>
-            <div class="input-suffix-wrap">
-              <input type="number" id="pageSize" value="14" min="6" max="200">
-              <span class="suffix">px</span>
+            <label for="fontSize">Font size</label>
+            <div class="input-suffix">
+              <input type="number" id="fontSize" value="14" min="6" max="200">
+              <span>px</span>
             </div>
           </div>
-          <!-- Color -->
           <div class="form-group">
             <label>Color</label>
-            <div class="color-input-row">
-              <div class="color-swatch" id="colorSwatch" style="background: #FFFFFF">
-                <input type="color" id="pageColorPicker" value="#ffffff">
+            <div class="color-row">
+              <div class="color-swatch" id="swatch" style="background:#FFFFFF">
+                <input type="color" id="colorPicker" value="#ffffff">
               </div>
-              <input type="text" id="pageColor" value="#FFFFFF" placeholder="#FFFFFF" spellcheck="false">
-            </div>
-            <div class="color-presets">
-              <div class="color-preset selected" data-color="#FFFFFF" style="background:#FFFFFF" title="White"></div>
-              <div class="color-preset" data-color="#000000" style="background:#000000" title="Black"></div>
-              <div class="color-preset" data-color="#999999" style="background:#999999" title="Gray"></div>
-              <div class="color-preset" data-color="#EF4444" style="background:#EF4444" title="Red"></div>
-              <div class="color-preset" data-color="#F59E0B" style="background:#F59E0B" title="Amber"></div>
-              <div class="color-preset" data-color="#10B981" style="background:#10B981" title="Green"></div>
-              <div class="color-preset" data-color="#3B82F6" style="background:#3B82F6" title="Blue"></div>
+              <input type="text" id="colorHex" value="#FFFFFF" placeholder="#FFFFFF" spellcheck="false">
             </div>
           </div>
-          <!-- Margin -->
           <div class="form-group">
-            <label for="pageMargin">Margin</label>
-            <div class="input-suffix-wrap">
-              <input type="number" id="pageMargin" value="24" min="0">
-              <span class="suffix">px</span>
+            <label for="margin">Margin</label>
+            <div class="input-suffix">
+              <input type="number" id="margin" value="24" min="0">
+              <span>px</span>
             </div>
           </div>
-          <!-- Format -->
           <div class="form-group">
-            <label for="pageFormat">Format</label>
-            <input type="text" id="pageFormat" value="{n}" placeholder="{n} / {total}" spellcheck="false">
+            <label for="format">Format</label>
+            <input type="text" id="format" value="{n}" placeholder="{n} / {total}" spellcheck="false">
           </div>
-          <!-- Opacity -->
           <div class="form-group">
-            <label for="pageOpacity">Opacity</label>
-            <div class="input-suffix-wrap">
-              <input type="number" id="pageOpacity" value="100" min="0" max="100">
-              <span class="suffix">%</span>
+            <label for="opacity">Opacity</label>
+            <div class="input-suffix">
+              <input type="number" id="opacity" value="100" min="0" max="100">
+              <span>%</span>
             </div>
           </div>
         </div>
@@ -718,110 +554,88 @@
 
   <div class="actions">
     <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
-    <button class="btn btn-primary" id="applyBtn">Apply Changes</button>
+    <button class="btn btn-primary" id="applyBtn">Apply</button>
   </div>
 
   <script>
-    // ── State ────────────────────────────────────────
-    var selectedDirection = 'left-right';
-    var selectedPosition = 'bottom-right';
+    var selectedOrder = 'lines';
+    var selectedPos = 'bottom-right';
 
-    // ── Direction buttons ────────────────────────────
-    document.querySelectorAll('.direction-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.direction-btn').forEach(function(b) { b.classList.remove('selected'); });
-        btn.classList.add('selected');
-        selectedDirection = btn.dataset.direction;
+    // ── Order pills ──────────────────────────────────
+    document.querySelectorAll('.order-pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        document.querySelectorAll('.order-pill').forEach(function(p) { p.classList.remove('selected'); });
+        pill.classList.add('selected');
+        selectedOrder = pill.dataset.order;
       });
     });
 
-    // ── Position buttons ─────────────────────────────
-    document.querySelectorAll('.position-btn').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.position-btn').forEach(function(b) { b.classList.remove('selected'); });
-        btn.classList.add('selected');
-        selectedPosition = btn.dataset.pos;
+    // ── Position dots ────────────────────────────────
+    document.querySelectorAll('.pos-dot').forEach(function(dot) {
+      dot.addEventListener('click', function() {
+        document.querySelectorAll('.pos-dot').forEach(function(d) { d.classList.remove('selected'); });
+        dot.classList.add('selected');
+        selectedPos = dot.dataset.pos;
       });
     });
 
-    // ── Page numbers toggle ──────────────────────────
-    var pageToggle = document.getElementById('pageNumEnabled');
-    var pageContent = document.getElementById('pageNumContent');
+    // ── Page numbers checkbox ────────────────────────
+    var pageCheck = document.getElementById('pageNumEnabled');
+    var pageOpts = document.getElementById('pageOpts');
 
-    pageToggle.addEventListener('change', function() {
-      var expanded = pageToggle.checked;
-      pageContent.classList.toggle('expanded', expanded);
-      parent.postMessage({ pluginMessage: { type: 'resize', height: expanded ? 640 : 430 } }, '*');
+    pageCheck.addEventListener('change', function() {
+      pageOpts.classList.toggle('disabled', !pageCheck.checked);
     });
 
-    // ── Color picker & sync ─────────────────────────
-    var colorPicker = document.getElementById('pageColorPicker');
-    var colorText = document.getElementById('pageColor');
-    var colorSwatch = document.getElementById('colorSwatch');
+    // ── Color sync ───────────────────────────────────
+    var picker = document.getElementById('colorPicker');
+    var hexInput = document.getElementById('colorHex');
+    var swatch = document.getElementById('swatch');
 
-    function updateColor(hex) {
-      hex = hex.toUpperCase();
-      if (hex.charAt(0) !== '#') hex = '#' + hex;
-      colorText.value = hex;
-      colorPicker.value = hex.toLowerCase();
-      colorSwatch.style.background = hex;
-      document.querySelectorAll('.color-preset').forEach(function(p) {
-        p.classList.toggle('selected', p.dataset.color === hex);
-      });
-    }
-
-    colorPicker.addEventListener('input', function(e) {
-      updateColor(e.target.value);
+    picker.addEventListener('input', function() {
+      var val = picker.value.toUpperCase();
+      hexInput.value = val;
+      swatch.style.background = val;
     });
 
-    colorText.addEventListener('input', function(e) {
-      var val = e.target.value;
+    hexInput.addEventListener('input', function() {
+      var val = hexInput.value;
       if (val.charAt(0) !== '#') val = '#' + val;
       if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
-        colorPicker.value = val.toLowerCase();
-        colorSwatch.style.background = val;
+        picker.value = val.toLowerCase();
+        swatch.style.background = val;
       }
-      document.querySelectorAll('.color-preset').forEach(function(p) {
-        p.classList.toggle('selected', p.dataset.color === val.toUpperCase());
-      });
     });
 
-    // ── Color presets ────────────────────────────────
-    document.querySelectorAll('.color-preset').forEach(function(preset) {
-      preset.addEventListener('click', function() {
-        updateColor(preset.dataset.color);
-      });
-    });
-
-    // ── Clear page numbers ───────────────────────────
-    document.getElementById('clearPageNums').addEventListener('click', function() {
+    // ── Clear ────────────────────────────────────────
+    document.getElementById('clearBtn').addEventListener('click', function() {
       parent.postMessage({ pluginMessage: { type: 'remove-page-numbers' } }, '*');
     });
 
     // ── Apply ────────────────────────────────────────
     document.getElementById('applyBtn').addEventListener('click', function() {
+      var orderMap = { lines: 'left-right', columns: 'top-bottom', auto: 'auto' };
       var rawStart = parseInt(document.getElementById('startAt').value);
-      var rawMargin = parseInt(document.getElementById('pageMargin').value);
-      var rawOpacity = parseInt(document.getElementById('pageOpacity').value);
+      var rawMargin = parseInt(document.getElementById('margin').value);
+      var rawOpacity = parseInt(document.getElementById('opacity').value);
 
-      var config = {
+      parent.postMessage({ pluginMessage: {
         type: 'number-layers',
-        direction: selectedDirection,
+        direction: orderMap[selectedOrder],
         startAt: isNaN(rawStart) ? 1 : rawStart,
         padding: parseInt(document.getElementById('padding').value) || 1,
         prefix: document.getElementById('prefix').value,
         suffix: document.getElementById('suffix').value,
         pageNumbers: {
-          enabled: pageToggle.checked,
-          position: selectedPosition,
-          fontSize: parseInt(document.getElementById('pageSize').value) || 14,
-          color: document.getElementById('pageColor').value || '#FFFFFF',
+          enabled: pageCheck.checked,
+          position: selectedPos,
+          fontSize: parseInt(document.getElementById('fontSize').value) || 14,
+          color: document.getElementById('colorHex').value || '#FFFFFF',
           margin: isNaN(rawMargin) ? 24 : rawMargin,
-          format: document.getElementById('pageFormat').value || '{n}',
+          format: document.getElementById('format').value || '{n}',
           opacity: isNaN(rawOpacity) ? 100 : Math.max(0, Math.min(100, rawOpacity)),
         },
-      };
-      parent.postMessage({ pluginMessage: config }, '*');
+      }}, '*');
     });
 
     // ── Cancel ───────────────────────────────────────
@@ -835,10 +649,10 @@
       if (!msg) return;
 
       if (msg.type === 'selection') {
-        var badge = document.getElementById('selectionBadge');
-        var text = document.getElementById('selectionText');
+        var badge = document.getElementById('badge');
+        var text = document.getElementById('badgeText');
         var btn = document.getElementById('applyBtn');
-        text.textContent = msg.count + ' ' + (msg.count === 1 ? 'layer' : 'layers') + ' selected';
+        text.textContent = msg.count + ' ' + (msg.count === 1 ? 'layer' : 'layers');
         badge.classList.toggle('active', msg.count > 0);
         btn.disabled = msg.count === 0;
       }
@@ -848,12 +662,11 @@
       }
     };
 
-    function showToast(message, type) {
-      var toast = document.getElementById('toast');
-      var text = document.getElementById('toastMessage');
-      text.textContent = message;
-      toast.className = 'toast ' + type + ' show';
-      setTimeout(function() { toast.classList.remove('show'); }, 3000);
+    function showToast(msg, type) {
+      var t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.className = 'toast ' + type + ' show';
+      setTimeout(function() { t.classList.remove('show'); }, 3000);
     }
   </script>
 </body>

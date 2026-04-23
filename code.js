@@ -1,6 +1,6 @@
 // Numero – Figma Layer Numbering Plugin
 
-figma.showUI(__html__, { width: 320, height: 430 });
+figma.showUI(__html__, { width: 320, height: 580 });
 
 // ── Row / Column Grouping ──────────────────────────────
 
@@ -57,6 +57,22 @@ function sortLayers(layers, direction) {
       const cols = groupIntoCols(layers);
       cols.forEach(c => c.sort((a, b) => b.y - a.y));
       return cols.flat();
+    }
+    case 'auto': {
+      if (layers.length <= 1) return layers;
+      const xs = layers.map(l => l.x);
+      const ys = layers.map(l => l.y);
+      const xRange = Math.max(...xs) - Math.min(...xs);
+      const yRange = Math.max(...ys) - Math.min(...ys);
+      if (xRange >= yRange) {
+        const rows = groupIntoRows(layers);
+        rows.forEach(r => r.sort((a, b) => a.x - b.x));
+        return rows.flat();
+      } else {
+        const cols = groupIntoCols(layers);
+        cols.forEach(c => c.sort((a, b) => a.y - b.y));
+        return cols.flat();
+      }
     }
     default:
       return layers;
@@ -175,7 +191,15 @@ figma.ui.onmessage = async (msg) => {
 
         const margin = typeof pn.margin === 'number' && !isNaN(pn.margin) ? pn.margin : 24;
 
-        if (pn.position === 'bottom-left') {
+        if (pn.position === 'top-left') {
+          node.x = margin;
+          node.y = margin;
+          node.constraints = { horizontal: 'MIN', vertical: 'MIN' };
+        } else if (pn.position === 'top-right') {
+          node.x = layer.width - node.width - margin;
+          node.y = margin;
+          node.constraints = { horizontal: 'MAX', vertical: 'MIN' };
+        } else if (pn.position === 'bottom-left') {
           node.x = margin;
           node.y = layer.height - node.height - margin;
           node.constraints = { horizontal: 'MIN', vertical: 'MAX' };
