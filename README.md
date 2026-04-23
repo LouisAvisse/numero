@@ -40,7 +40,7 @@ Rename and number selected layers based on their position, with smart row detect
 |-----------|------------|------------------------------------------------------|
 | Position  | Bottom Right | Bottom-left or bottom-right of the frame           |
 | Font size | 14px       | Size of the label text                               |
-| Color     | #FFFFFF    | Hex color + preset swatches (white, black, gray, accent) |
+| Color     | #FFFFFF    | Full color picker, hex input, and 7 preset swatches      |
 | Margin    | 24px       | Distance from the frame edges                        |
 | Format    | `{n}`      | Template — use `{n}` for number, `{total}` for count |
 | Opacity   | 100%       | Label transparency                                   |

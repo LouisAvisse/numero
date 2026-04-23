@@ -31,12 +31,37 @@
       line-height: 1.5;
       background-color: var(--bg);
       color: var(--text);
-      overflow: hidden;
       height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      overflow: hidden;
       -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Scrollable content area ────────────────────── */
+
+    .content {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 16px 16px 0;
+    }
+
+    .content::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .content::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
     }
 
     /* ── Header & Badge ─────────────────────────────── */
@@ -168,7 +193,8 @@
       color: var(--text-muted);
     }
 
-    input {
+    input[type="text"],
+    input[type="number"] {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -179,9 +205,11 @@
       outline: none;
       transition: all 0.2s;
       width: 100%;
+      height: 32px;
     }
 
-    input:focus {
+    input[type="text"]:focus,
+    input[type="number"]:focus {
       border-color: var(--accent);
       box-shadow: 0 0 0 2px var(--accent-subtle);
     }
@@ -305,11 +333,11 @@
       max-height: 0;
       overflow: hidden;
       opacity: 0;
-      transition: max-height 0.25s ease, opacity 0.2s ease;
+      transition: max-height 0.3s ease, opacity 0.2s ease;
     }
 
     .page-num-content.expanded {
-      max-height: 280px;
+      max-height: 400px;
       opacity: 1;
     }
 
@@ -365,11 +393,51 @@
       height: 14px;
     }
 
+    /* ── Color picker ──────────────────────────────── */
+
+    .color-input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .color-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: calc(var(--radius) - 2px);
+      border: 1px solid var(--border);
+      position: relative;
+      cursor: pointer;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .color-swatch:hover {
+      border-color: var(--text-muted);
+    }
+
+    .color-swatch input[type="color"] {
+      position: absolute;
+      inset: -4px;
+      width: calc(100% + 8px);
+      height: calc(100% + 8px);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      opacity: 0;
+    }
+
+    .color-input-row input[type="text"] {
+      flex: 1;
+      min-width: 0;
+    }
+
     /* Color presets */
     .color-presets {
       display: flex;
-      gap: 6px;
-      margin-top: 5px;
+      gap: 4px;
+      flex-wrap: wrap;
     }
 
     .color-preset {
@@ -394,12 +462,12 @@
 
     /* ── Footer Actions ─────────────────────────────── */
 
-    .spacer { flex: 1; }
-
     .actions {
+      flex-shrink: 0;
       display: flex;
       gap: 10px;
-      margin-top: 12px;
+      padding: 12px 16px 16px;
+      border-top: 1px solid var(--border);
     }
 
     .btn {
@@ -493,152 +561,160 @@
     <span id="toastMessage"></span>
   </div>
 
-  <!-- Header -->
-  <div class="header">
-    <span class="title">Numero</span>
-    <div class="selection-badge" id="selectionBadge">
-      <div class="status-dot"></div>
-      <span id="selectionText">0 selected</span>
+  <div class="content">
+    <!-- Header -->
+    <div class="header">
+      <span class="title">Numero</span>
+      <div class="selection-badge" id="selectionBadge">
+        <div class="status-dot"></div>
+        <span id="selectionText">0 selected</span>
+      </div>
+    </div>
+
+    <!-- Direction -->
+    <div class="section">
+      <div class="section-label">Direction</div>
+      <div class="direction-grid">
+        <button class="direction-btn selected" data-direction="left-right" title="Left to Right">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+          <span>L &rarr; R</span>
+        </button>
+        <button class="direction-btn" data-direction="right-left" title="Right to Left">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M19 12H5M11 19l-7-7 7-7"/>
+          </svg>
+          <span>R &rarr; L</span>
+        </button>
+        <button class="direction-btn" data-direction="top-bottom" title="Top to Bottom">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14M19 13l-7 7-7-7"/>
+          </svg>
+          <span>T &rarr; B</span>
+        </button>
+        <button class="direction-btn" data-direction="bottom-top" title="Bottom to Top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 19V5M5 11l7-7 7 7"/>
+          </svg>
+          <span>B &rarr; T</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Naming Options -->
+    <div class="section">
+      <div class="section-label">Options</div>
+      <div class="options">
+        <div class="form-group">
+          <label for="startAt">Start at</label>
+          <input type="number" id="startAt" value="1" min="0">
+        </div>
+        <div class="form-group">
+          <label for="padding">Padding</label>
+          <input type="number" id="padding" value="1" min="1" max="9">
+        </div>
+        <div class="form-group">
+          <label for="prefix">Prefix</label>
+          <input type="text" id="prefix" placeholder="Item-">
+        </div>
+        <div class="form-group">
+          <label for="suffix">Suffix</label>
+          <input type="text" id="suffix" placeholder="-final">
+        </div>
+      </div>
+    </div>
+
+    <!-- Page Numbers -->
+    <div class="section" id="pageNumSection">
+      <div class="section-header">
+        <span class="section-label">Page Numbers</span>
+        <div class="section-actions">
+          <button class="btn-clear" id="clearPageNums" title="Remove existing page labels from selection">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
+            </svg>
+          </button>
+          <label class="toggle-switch">
+            <input type="checkbox" id="pageNumEnabled">
+            <div class="toggle-track"></div>
+          </label>
+        </div>
+      </div>
+      <div class="page-num-content" id="pageNumContent">
+        <div class="page-num-options">
+          <!-- Position -->
+          <div class="form-group">
+            <label>Position</label>
+            <div class="position-grid">
+              <button class="position-btn" data-pos="bottom-left" title="Bottom Left">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
+                  <circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span>Left</span>
+              </button>
+              <button class="position-btn selected" data-pos="bottom-right" title="Bottom Right">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
+                  <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
+                  <circle cx="11" cy="12" r="1.5" fill="currentColor" stroke="none"/>
+                </svg>
+                <span>Right</span>
+              </button>
+            </div>
+          </div>
+          <!-- Font Size -->
+          <div class="form-group">
+            <label for="pageSize">Font size</label>
+            <div class="input-suffix-wrap">
+              <input type="number" id="pageSize" value="14" min="6" max="200">
+              <span class="suffix">px</span>
+            </div>
+          </div>
+          <!-- Color -->
+          <div class="form-group">
+            <label>Color</label>
+            <div class="color-input-row">
+              <div class="color-swatch" id="colorSwatch" style="background: #FFFFFF">
+                <input type="color" id="pageColorPicker" value="#ffffff">
+              </div>
+              <input type="text" id="pageColor" value="#FFFFFF" placeholder="#FFFFFF" spellcheck="false">
+            </div>
+            <div class="color-presets">
+              <div class="color-preset selected" data-color="#FFFFFF" style="background:#FFFFFF" title="White"></div>
+              <div class="color-preset" data-color="#000000" style="background:#000000" title="Black"></div>
+              <div class="color-preset" data-color="#999999" style="background:#999999" title="Gray"></div>
+              <div class="color-preset" data-color="#EF4444" style="background:#EF4444" title="Red"></div>
+              <div class="color-preset" data-color="#F59E0B" style="background:#F59E0B" title="Amber"></div>
+              <div class="color-preset" data-color="#10B981" style="background:#10B981" title="Green"></div>
+              <div class="color-preset" data-color="#3B82F6" style="background:#3B82F6" title="Blue"></div>
+            </div>
+          </div>
+          <!-- Margin -->
+          <div class="form-group">
+            <label for="pageMargin">Margin</label>
+            <div class="input-suffix-wrap">
+              <input type="number" id="pageMargin" value="24" min="0">
+              <span class="suffix">px</span>
+            </div>
+          </div>
+          <!-- Format -->
+          <div class="form-group">
+            <label for="pageFormat">Format</label>
+            <input type="text" id="pageFormat" value="{n}" placeholder="{n} / {total}" spellcheck="false">
+          </div>
+          <!-- Opacity -->
+          <div class="form-group">
+            <label for="pageOpacity">Opacity</label>
+            <div class="input-suffix-wrap">
+              <input type="number" id="pageOpacity" value="100" min="0" max="100">
+              <span class="suffix">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Direction -->
-  <div class="section">
-    <div class="section-label">Direction</div>
-    <div class="direction-grid">
-      <button class="direction-btn selected" data-direction="left-right" title="Left to Right">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M5 12h14M13 5l7 7-7 7"/>
-        </svg>
-        <span>L &rarr; R</span>
-      </button>
-      <button class="direction-btn" data-direction="right-left" title="Right to Left">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M19 12H5M11 19l-7-7 7-7"/>
-        </svg>
-        <span>R &rarr; L</span>
-      </button>
-      <button class="direction-btn" data-direction="top-bottom" title="Top to Bottom">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 5v14M19 13l-7 7-7-7"/>
-        </svg>
-        <span>T &rarr; B</span>
-      </button>
-      <button class="direction-btn" data-direction="bottom-top" title="Bottom to Top">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M12 19V5M5 11l7-7 7 7"/>
-        </svg>
-        <span>B &rarr; T</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Naming Options -->
-  <div class="section">
-    <div class="section-label">Options</div>
-    <div class="options">
-      <div class="form-group">
-        <label for="startAt">Start at</label>
-        <input type="number" id="startAt" value="1" min="0">
-      </div>
-      <div class="form-group">
-        <label for="padding">Padding</label>
-        <input type="number" id="padding" value="1" min="1" max="9">
-      </div>
-      <div class="form-group">
-        <label for="prefix">Prefix</label>
-        <input type="text" id="prefix" placeholder="Item-">
-      </div>
-      <div class="form-group">
-        <label for="suffix">Suffix</label>
-        <input type="text" id="suffix" placeholder="-final">
-      </div>
-    </div>
-  </div>
-
-  <!-- Page Numbers -->
-  <div class="section" id="pageNumSection">
-    <div class="section-header">
-      <span class="section-label">Page Numbers</span>
-      <div class="section-actions">
-        <button class="btn-clear" id="clearPageNums" title="Remove existing page labels from selection">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/>
-              </svg>
-            </button>
-        <label class="toggle-switch">
-          <input type="checkbox" id="pageNumEnabled">
-          <div class="toggle-track"></div>
-        </label>
-      </div>
-    </div>
-    <div class="page-num-content" id="pageNumContent">
-      <div class="page-num-options">
-        <!-- Position -->
-        <div class="form-group">
-          <label>Position</label>
-          <div class="position-grid">
-            <button class="position-btn" data-pos="bottom-left" title="Bottom Left">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-                <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
-                <circle cx="5" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-              </svg>
-              <span>Left</span>
-            </button>
-            <button class="position-btn selected" data-pos="bottom-right" title="Bottom Right">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2">
-                <rect x="1.5" y="1.5" width="13" height="13" rx="1.5"/>
-                <circle cx="11" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-              </svg>
-              <span>Right</span>
-            </button>
-          </div>
-        </div>
-        <!-- Font Size -->
-        <div class="form-group">
-          <label for="pageSize">Font size</label>
-          <div class="input-suffix-wrap">
-            <input type="number" id="pageSize" value="14" min="6" max="200">
-            <span class="suffix">px</span>
-          </div>
-        </div>
-        <!-- Color -->
-        <div class="form-group">
-          <label for="pageColor">Color</label>
-          <input type="text" id="pageColor" value="#FFFFFF" placeholder="#FFFFFF" spellcheck="false">
-          <div class="color-presets">
-            <div class="color-preset selected" data-color="#FFFFFF" style="background:#FFFFFF" title="White"></div>
-            <div class="color-preset" data-color="#000000" style="background:#000000" title="Black"></div>
-            <div class="color-preset" data-color="#999999" style="background:#999999" title="Gray"></div>
-            <div class="color-preset" data-color="#FF6B35" style="background:#FF6B35" title="Accent"></div>
-          </div>
-        </div>
-        <!-- Margin -->
-        <div class="form-group">
-          <label for="pageMargin">Margin</label>
-          <div class="input-suffix-wrap">
-            <input type="number" id="pageMargin" value="24" min="0">
-            <span class="suffix">px</span>
-          </div>
-        </div>
-        <!-- Format -->
-        <div class="form-group">
-          <label for="pageFormat">Format</label>
-          <input type="text" id="pageFormat" value="{n}" placeholder="{n} / {total}" spellcheck="false">
-        </div>
-        <!-- Opacity -->
-        <div class="form-group">
-          <label for="pageOpacity">Opacity</label>
-          <div class="input-suffix-wrap">
-            <input type="number" id="pageOpacity" value="100" min="0" max="100">
-            <span class="suffix">%</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="spacer"></div>
 
   <div class="actions">
     <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
@@ -675,23 +751,45 @@
     pageToggle.addEventListener('change', function() {
       var expanded = pageToggle.checked;
       pageContent.classList.toggle('expanded', expanded);
-      parent.postMessage({ pluginMessage: { type: 'resize', height: expanded ? 620 : 430 } }, '*');
+      parent.postMessage({ pluginMessage: { type: 'resize', height: expanded ? 640 : 430 } }, '*');
+    });
+
+    // ── Color picker & sync ─────────────────────────
+    var colorPicker = document.getElementById('pageColorPicker');
+    var colorText = document.getElementById('pageColor');
+    var colorSwatch = document.getElementById('colorSwatch');
+
+    function updateColor(hex) {
+      hex = hex.toUpperCase();
+      if (hex.charAt(0) !== '#') hex = '#' + hex;
+      colorText.value = hex;
+      colorPicker.value = hex.toLowerCase();
+      colorSwatch.style.background = hex;
+      document.querySelectorAll('.color-preset').forEach(function(p) {
+        p.classList.toggle('selected', p.dataset.color === hex);
+      });
+    }
+
+    colorPicker.addEventListener('input', function(e) {
+      updateColor(e.target.value);
+    });
+
+    colorText.addEventListener('input', function(e) {
+      var val = e.target.value;
+      if (val.charAt(0) !== '#') val = '#' + val;
+      if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+        colorPicker.value = val.toLowerCase();
+        colorSwatch.style.background = val;
+      }
+      document.querySelectorAll('.color-preset').forEach(function(p) {
+        p.classList.toggle('selected', p.dataset.color === val.toUpperCase());
+      });
     });
 
     // ── Color presets ────────────────────────────────
     document.querySelectorAll('.color-preset').forEach(function(preset) {
       preset.addEventListener('click', function() {
-        document.querySelectorAll('.color-preset').forEach(function(p) { p.classList.remove('selected'); });
-        preset.classList.add('selected');
-        document.getElementById('pageColor').value = preset.dataset.color;
-      });
-    });
-
-    document.getElementById('pageColor').addEventListener('input', function(e) {
-      var val = e.target.value.toUpperCase();
-      if (val.charAt(0) !== '#') val = '#' + val;
-      document.querySelectorAll('.color-preset').forEach(function(p) {
-        p.classList.toggle('selected', p.dataset.color === val);
+        updateColor(preset.dataset.color);
       });
     });
 
